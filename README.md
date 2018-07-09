@@ -1,7 +1,9 @@
 # ocrd-train
 
 > Training workflow for Tesseract 4 as a Makefile for dependency tracking and
-  building the required software from source.
+  building the required software from source.  
+
+> Additional tool: Convert dataset based ICDAR format to the format of this tool.  
 
 ## Install
 
@@ -53,6 +55,7 @@ Run `make help` to see all the possible targets and variables:
     tesseract-langs  Download tesseract-langs
     langdata         Download langdata
     clean            Clean all generated files
+    convert          Convert ICDAR formated dataset to the useful format
 
   Variables
 
@@ -64,6 +67,7 @@ Run `make help` to see all the possible targets and variables:
     TESSDATA_REPO      Tesseract model repo to use. Default: _fast
     TRAIN              Train directory
     RATIO_TRAIN        Ratio of train / eval training data
+    ICDAR_DATA         ICDAR Data folder tobe converted
 ```
 
 <!-- END-EVAL -->
@@ -72,4 +76,4 @@ Run `make help` to see all the possible targets and variables:
 
 Software is provided under the terms of the `Apache 2.0` license.
 
-Sample training data provided by [Deutsches Textarchiv](https://deutschestextarchiv.de) is [in the public domain](http://creativecommons.org/publicdomain/mark/1.0/).
+Original repository provided by [OCR-D](https://github.com/OCR-D/ocrd-train)

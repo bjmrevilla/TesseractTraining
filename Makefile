@@ -27,6 +27,9 @@ TESSDATA_REPO = _fast
 # Train directory
 TRAIN := data/train
 
+# ICDAR data directory
+ICDAR_DATA := data/icdar
+
 # BEGIN-EVAL makefile-parser --make-help Makefile
 
 help:
