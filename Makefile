@@ -1,13 +1,13 @@
 export
 
 SHELL := /bin/bash
-LOCAL := $(PWD)/usr
+LOCAL := /usr/local
 PATH := $(LOCAL)/bin:$(PATH)
 TESSDATA =  $(LOCAL)/share/tessdata 
 LANGDATA = $(PWD)/langdata-$(LANGDATA_VERSION)
 
 # Name of the model to be built
-MODEL_NAME = foo
+MODEL_NAME = eng
 
 # No of cores to use for compiling leptonica/tesseract
 CORES = 4
@@ -45,6 +45,7 @@ help:
 	@echo "    tesseract-langs  Download tesseract-langs"
 	@echo "    langdata         Download langdata"
 	@echo "    clean            Clean all generated files"
+	@echo "    convert          Convert ICDAR formated dataset to the useful format"
 	@echo ""
 	@echo "  Variables"
 	@echo ""
@@ -56,6 +57,7 @@ help:
 	@echo "    TESSDATA_REPO      Tesseract model repo to use. Default: $(TESSDATA_REPO)"
 	@echo "    TRAIN              Train directory"
 	@echo "    RATIO_TRAIN        Ratio of train / eval training data"
+	@echo "    ICDAR_DATA         ICDAR Data folder tobe converted"
 
 # END-EVAL
 
@@ -169,11 +171,15 @@ tesseract-langs: $(TESSDATA)/eng.traineddata
 langdata: $(LANGDATA)
 
 $(LANGDATA):
-	wget 'https://github.com/tesseract-ocr/langdata/archive/$(LANGDATA_VERSION).zip'
+	wget 'https://github.com/tesseract-ocr/langdata/archive/$(LANGDATA_VERSION).zip' --no-check-certificate
 	unzip $(LANGDATA_VERSION).zip
 
 $(TESSDATA)/eng.traineddata:
 	cd $(TESSDATA) && wget https://github.com/tesseract-ocr/tessdata$(TESSDATA_REPO)/raw/master/$(notdir $@)
+
+# Convert ICDAR to TESS
+convert:
+	python convert_icdar.py -i "$(ICDAR_DATA)" -o "$(TRAIN)"
 
 # Clean all generated files
 clean:
