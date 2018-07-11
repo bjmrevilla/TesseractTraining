@@ -30,6 +30,9 @@ TRAIN := data/train
 # ICDAR data directory
 ICDAR_DATA := data/icdar
 
+# Existing model in case fine tuning
+TRAINED_MODEL := $(LOCAL)/share/tessdata/$(MODEL_NAME).traineddata
+
 # BEGIN-EVAL makefile-parser --make-help Makefile
 
 help:
@@ -39,6 +42,7 @@ help:
 	@echo "    unicharset       Create unicharset"
 	@echo "    lists            Create lists of lstmf filenames for training and eval"
 	@echo "    training         Start training"
+	@echo "    finetune         Start training from an existing model"
 	@echo "    proto-model      Build the proto model"
 	@echo "    leptonica        Build leptonica"
 	@echo "    tesseract        Build tesseract"
@@ -104,7 +108,7 @@ $(TRAIN)/%.lstmf: $(TRAIN)/%.box
 # Build the proto model
 proto-model: data/$(MODEL_NAME)/$(MODEL_NAME).traineddata
 
-data/$(MODEL_NAME)/$(MODEL_NAME).traineddata: $(LANGDATA) data/unicharset
+data/$(MODEL_NAME)/$(MODEL_NAME).traineddata: langdata data/unicharset
 	combine_lang_model \
 	  --input_unicharset data/unicharset \
 	  --script_dir $(LANGDATA) \
@@ -128,6 +132,18 @@ data/$(MODEL_NAME).traineddata: data/checkpoints/$(MODEL_NAME)_checkpoint
 	--continue_from $^ \
 	--traineddata data/$(MODEL_NAME)/$(MODEL_NAME).traineddata \
 	--model_output $@
+
+# Start finetuning
+finetune: lists
+	mkdir -p data/checkpoints
+	combine_tessdata -e $(TRAINED_MODEL) ./data/$(MODEL_NAME).lstm
+	lstmtraining \
+	--continue_from ./data/$(MODEL_NAME).lstm \
+	--traineddata $(TRAINED_MODEL) \
+	--train_listfile data/list.train \
+	--eval_listfile data/list.eval \
+	--model_output ./data/checkpoints/$(MODEL_NAME) \
+	--max_iterations 10000
 
 # Build leptonica
 leptonica: leptonica.built
@@ -168,11 +184,11 @@ tesseract-$(TESSERACT_VERSION):
 tesseract-langs: $(TESSDATA)/eng.traineddata
 
 # Download langdata
-langdata: $(LANGDATA)
-
-$(LANGDATA):
-	wget 'https://github.com/tesseract-ocr/langdata/archive/$(LANGDATA_VERSION).zip' --no-check-certificate
-	unzip $(LANGDATA_VERSION).zip
+langdata:
+	if [ ! -e ./$(LANGDATA_VERSION).zip ]; then \
+		wget 'https://github.com/tesseract-ocr/langdata/archive/$(LANGDATA_VERSION).zip' --no-check-certificate; \
+		unzip $(LANGDATA_VERSION).zip; \
+	fi;
 
 $(TESSDATA)/eng.traineddata:
 	cd $(TESSDATA) && wget https://github.com/tesseract-ocr/tessdata$(TESSDATA_REPO)/raw/master/$(notdir $@)

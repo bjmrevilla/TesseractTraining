@@ -1,9 +1,10 @@
 # ocrd-train
 
-> Training workflow for Tesseract 4 as a Makefile for dependency tracking and
-  building the required software from source.  
+Training workflow for Tesseract 4 as a Makefile for dependency tracking and building the required software from source.   
 
-> Additional tool: Convert dataset based ICDAR format to the format of this tool.  
+New features:  
+- Process for finetuning LSTM network  
+- Additional tool: Convert dataset based ICDAR format to the format of this tool.    
 
 ## Install
 
