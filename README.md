@@ -28,21 +28,26 @@ The repository contains a ZIP archive with sample ground truth, see
 [ocrd-testset.zip](./ocrd-testset.zip). Extract it to `./data/train` and run
 `make training`.
 
-## Train
+## Running
 
+To train Tesseract from scratch, use the command:  
 ```
- make training MODEL_NAME=name-of-the-resulting-model
+ make training MODEL_NAME=model_name
 ```
-
 which is basically a shortcut for
-
 ```
    make unicharset lists proto-model training
 ```
+  
+To finetune Tesseract LSTM, use the command:
+```
+   make finetune MODEL_NAME=model_name TRAINED_MODEL=path/to/traineddata_file
+```
+Noted that only trained files in [tessdata_best](https://github.com/tesseract-ocr/tessdata_best) can be finetuned, models in [tessdata](https://github.com/tesseract-ocr/tessdata) and [tessdata_fast](https://github.com/tesseract-ocr/tessdata_fast) will cause segmentation dump because they are integer models.
 
 Run `make help` to see all the possible targets and variables:
 
-<!-- BEGIN-EVAL -w '```' '```' -- make help -->
+<!-- BEGIN-EVAL -w '```' '```'  make help -->
 ```
 
   Targets
