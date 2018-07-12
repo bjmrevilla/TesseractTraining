@@ -1,4 +1,4 @@
-# ocrd-train
+# Tesseract Training
 
 Training workflow for Tesseract 4 as a Makefile for dependency tracking and building the required software from source.   
 
@@ -74,7 +74,7 @@ Run `make help` to see all the possible targets and variables:
     TESSDATA_REPO      Tesseract model repo to use. Default: _fast
     TRAIN              Train directory
     RATIO_TRAIN        Ratio of train / eval training data
-    ICDAR_DATA         ICDAR Data folder tobe converted
+    ICDAR_DATA         ICDAR Data folder to be converted
     TRAINED_MODEL      Existing model to finetune
 ```
 
