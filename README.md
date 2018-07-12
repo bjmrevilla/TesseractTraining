@@ -50,6 +50,7 @@ Run `make help` to see all the possible targets and variables:
     unicharset       Create unicharset
     lists            Create lists of lstmf filenames for training and eval
     training         Start training
+    finetune         Start training from an existing model
     proto-model      Build the proto model
     leptonica        Build leptonica
     tesseract        Build tesseract
@@ -69,6 +70,7 @@ Run `make help` to see all the possible targets and variables:
     TRAIN              Train directory
     RATIO_TRAIN        Ratio of train / eval training data
     ICDAR_DATA         ICDAR Data folder tobe converted
+    TRAINED_MODEL      Existing model to finetune
 ```
 
 <!-- END-EVAL -->

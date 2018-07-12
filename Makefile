@@ -144,6 +144,11 @@ finetune: lists
 	--eval_listfile data/list.eval \
 	--model_output ./data/checkpoints/$(MODEL_NAME) \
 	--max_iterations 10000
+	lstmtraining \
+	--stop_training \
+	--continue_from ./data/checkpoints/$(MODEL_NAME)_checkpoint \
+	--traineddata $(TRAINED_MODEL) \
+	--model_output ./data/$(MODEL_NAME).traineddata
 
 # Build leptonica
 leptonica: leptonica.built
